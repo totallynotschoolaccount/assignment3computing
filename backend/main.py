@@ -6,14 +6,15 @@ import os
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from database import create_table, delete_history, get_db, get_history, save_check
 from predictor import load_model, predict_url
-from schemas import CheckRequest, CheckResult, ErrorResult, HealthResult
+from schemas import CheckRequest, CheckResult, DeleteResult, ErrorResult, HealthResult, HistoryItem
 
 # settings come from the .env file, not from the code
 MODEL_PATH = os.environ.get("MODEL_PATH", "model/phishfight_model.joblib")
@@ -25,6 +26,7 @@ FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173")
 async def lifespan(app: FastAPI):
     # load the model once when the server starts, not on every request
     app.state.model = load_model(MODEL_PATH, MODEL_SHA256)
+    create_table()
     yield
 
 
@@ -82,7 +84,29 @@ def health():
     response_model=CheckResult,
     responses={422: {"model": ErrorResult, "description": "The link is empty, too long or not a web link"}},
 )
-def check(req: CheckRequest):
-    """Checks one link. Returns phishing or legitimate, how confident the model is,
-    a risk score from 0 to 100, and warning signs in plain English."""
-    return predict_url(app.state.model, req.url)
+def check(req: CheckRequest, db=Depends(get_db)):
+    """Checks one link and saves it to this session's history. Returns phishing or legitimate,
+    how confident the model is, a risk score from 0 to 100, and warning signs in plain English."""
+    result = predict_url(app.state.model, req.url)
+    save_check(db, req.session_id, result)
+    return result
+
+
+@app.get(
+    "/api/history",
+    response_model=list[HistoryItem],
+    responses={422: {"model": ErrorResult, "description": "The session id is missing or too long"}},
+)
+def history(session_id: str = Query(min_length=1, max_length=64), db=Depends(get_db)):
+    """Returns every link checked in this session, oldest first. Used for the history chart."""
+    return get_history(db, session_id)
+
+
+@app.delete(
+    "/api/history",
+    response_model=DeleteResult,
+    responses={422: {"model": ErrorResult, "description": "The session id is missing or too long"}},
+)
+def clear_history(session_id: str = Query(min_length=1, max_length=64), db=Depends(get_db)):
+    """Deletes every check in this session's history."""
+    return {"deleted": delete_history(db, session_id)}

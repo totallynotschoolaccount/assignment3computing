@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field, field_validator
 class CheckRequest(BaseModel):
     # 2048 characters is the usual limit for a link, so a real one is never longer
     url: str = Field(min_length=1, max_length=2048, examples=["paypal.com.secure-login.tk/verify"])
+    # a random id the front end makes for each browser session, so history is kept apart
+    session_id: str = Field(min_length=1, max_length=64, examples=["b7e2c3a0-1d4f-4c2a-9a51-2f6d3c1e8b90"])
 
     @field_validator("url")
     @classmethod
@@ -47,6 +49,32 @@ class CheckResult(BaseModel):
             "Has words like login, verify or account",
         ],
     }]}}
+
+
+class HistoryItem(BaseModel):
+    id: int
+    url: str
+    label: str
+    confidence: float
+    score: int
+    risk_level: str
+    checked_at: str
+
+    model_config = {"json_schema_extra": {"examples": [{
+        "id": 1,
+        "url": "google.com",
+        "label": "legitimate",
+        "confidence": 0.664,
+        "score": 34,
+        "risk_level": "Medium",
+        "checked_at": "2026-11-04T09:30:00",
+    }]}}
+
+
+class DeleteResult(BaseModel):
+    deleted: int
+
+    model_config = {"json_schema_extra": {"examples": [{"deleted": 3}]}}
 
 
 class HealthResult(BaseModel):
