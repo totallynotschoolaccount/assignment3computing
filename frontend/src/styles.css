@@ -793,3 +793,77 @@ h1 span {
     transition-duration: .01ms !important;
   }
 }
+
+
+
+
+
+/* ---------- Added in Assignment 3: real results and errors ---------- */
+
+.checked-url {
+  margin: 16px 0 0;
+  color: #a6b5c8;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.checked-url code {
+  color: #e9eef8;
+  font-size: 12px;
+}
+
+.verdict {
+  margin: 10px 0 0;
+  color: #dce5f1;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.verdict strong {
+  color: #ffffff;
+}
+
+.status-message {
+  max-width: 690px;
+  margin: 22px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b7c4d6;
+  font-size: 13px;
+}
+
+.spinner.light {
+  border-color: rgba(233,238,248,.25);
+  border-top-color: #e9eef8;
+}
+
+.error-card {
+  max-width: 690px;
+  margin: 22px auto 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255,103,103,.35);
+  border-radius: 14px;
+  background: rgba(255,103,103,.08);
+  color: #ffaaaa;
+}
+
+.error-card h2 {
+  margin: 0 0 6px;
+  color: #ffd0d0;
+  font: 700 15px Manrope, sans-serif;
+}
+
+.error-card p {
+  margin: 0;
+  color: #f0c4c4;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.warning-item strong {
+  font-weight: 600;
+}
