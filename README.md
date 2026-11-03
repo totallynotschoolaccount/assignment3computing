@@ -1,5 +1,3 @@
-# assignment3computing
-
 # PhishFight Front-end (React + Vite)
 
 A front-end-only prototype for the PhishFight URL risk detection project. The layout is aimed at non-technical users and includes URL input validation, a risk score/result presentation, plain-language warning signs, responsive CSS, and clear limitations.
