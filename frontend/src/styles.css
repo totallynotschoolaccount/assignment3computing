@@ -867,3 +867,167 @@ h1 span {
 .warning-item strong {
   font-weight: 600;
 }
+
+
+
+
+
+
+/* ---------- Added in Assignment 3: pages, history, 404 and error page ---------- */
+
+.header-link.active {
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.page-heading {
+  padding: 56px 0 26px;
+  text-align: center;
+}
+
+.page-heading h1 {
+  margin: 12px 0 10px;
+  font-size: clamp(30px, 5vw, 42px);
+}
+
+.page-heading p {
+  margin: 0;
+  color: #a9b7ca;
+  font-size: 14px;
+}
+
+.fallback-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 90px 24px;
+  text-align: center;
+}
+
+.fallback-page h1 {
+  font-size: clamp(30px, 5vw, 42px);
+}
+
+.fallback-page p {
+  margin-bottom: 26px;
+  color: #a9b7ca;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.fallback-page .analyze-button {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.empty-card,
+.history-card {
+  max-width: 760px;
+  margin: 22px auto 0;
+  padding: 24px 26px;
+  border: 1px solid #2b3c52;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(23,38,58,.98), rgba(15,26,42,.98));
+}
+
+.empty-card {
+  text-align: center;
+}
+
+.empty-card h2,
+.history-top h2 {
+  margin: 0 0 6px;
+  font: 700 17px Manrope, sans-serif;
+}
+
+.empty-card p {
+  margin: 0;
+  color: #a9b7ca;
+  font-size: 13px;
+}
+
+.empty-card a {
+  color: var(--teal);
+  text-decoration: underline;
+}
+
+.history-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid #3a4c64;
+  border-radius: 9px;
+  background: transparent;
+  color: #dce5f1;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.history-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 96px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(41,57,78,.65);
+  font-size: 13px;
+}
+
+.history-item .risk-badge {
+  margin: 0;
+  justify-content: center;
+}
+
+.history-url {
+  color: #e9eef8;
+  overflow-wrap: anywhere;
+}
+
+.history-score {
+  font-weight: 700;
+}
+
+.history-time {
+  color: #8ea0b6;
+}
+
+@media (max-width: 640px) {
+  .history-item {
+    grid-template-columns: auto 1fr;
+    gap: 8px 12px;
+  }
+
+  .history-url {
+    grid-column: 1 / -1;
+  }
+
+  /* on a phone, show the page links as text and hide the pill to make room */
+  .header-link {
+    font-size: 13px;
+  }
+
+  .privacy-pill {
+    display: none;
+  }
+}

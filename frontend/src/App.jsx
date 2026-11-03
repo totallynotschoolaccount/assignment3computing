@@ -1,11 +1,14 @@
-import { ArrowRight, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import { LockKeyhole, ShieldCheck } from 'lucide-react';
 import CheckPage from './pages/CheckPage.jsx';
+import HistoryPage from './pages/HistoryPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 
 function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="PhishFight home">
+        <NavLink className="brand" to="/" aria-label="PhishFight home">
           <span className="brand-mark">
             <ShieldCheck size={23} strokeWidth={2.3} />
           </span>
@@ -13,25 +16,33 @@ function App() {
             Phish<span>Fight</span>
             <small>URL RISK CHECK</small>
           </span>
-        </a>
-        <div className="topbar-right">
+        </NavLink>
+        <nav className="topbar-right" aria-label="Main">
           <span className="privacy-pill">
             <LockKeyhole size={14} /> URL text only
           </span>
-          <a className="header-link" href="#how-it-works">
-            How it works <ArrowRight size={14} />
-          </a>
-        </div>
+          <NavLink className="header-link" to="/" end>
+            Check a link
+          </NavLink>
+          <NavLink className="header-link" to="/history">
+            History
+          </NavLink>
+        </nav>
       </header>
 
       <main id="home">
-        <CheckPage />
+        <Routes>
+          <Route path="/" element={<CheckPage />} />
+          <Route path="/history" element={<HistoryPage />} />
+          {/* any other address shows the 404 page */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
 
       <footer className="footer">
-        <a className="footer-brand" href="/">
+        <NavLink className="footer-brand" to="/">
           <ShieldCheck size={18} /> PhishFight
-        </a>
+        </NavLink>
         <span>COS30049 Assignment 3, Session 12 Group 4</span>
       </footer>
     </div>

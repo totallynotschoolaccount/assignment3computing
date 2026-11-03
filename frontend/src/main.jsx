@@ -1,12 +1,18 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import './styles.css';
 
-// Find the root element in index.html and render the React app inside it.
-// StrictMode adds development-only checks; it does not add UI to the page.
+// BrowserRouter lets us have pages with their own addresses (Week 9).
+// ErrorBoundary shows a fallback page if anything inside the app crashes (Week 11).
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
