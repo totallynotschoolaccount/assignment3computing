@@ -5,7 +5,7 @@ A front-end-only prototype for the PhishFight URL risk detection project. The la
 
 Run locally
 
-Requirements: Node.js 18+.
+Requirements: Node.js
 
 Run these commands one by one
 ```
