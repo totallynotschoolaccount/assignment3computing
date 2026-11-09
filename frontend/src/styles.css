@@ -1031,3 +1031,147 @@ h1 span {
     display: none;
   }
 }
+
+/* ---------- Added in Assignment 3: charts ---------- */
+
+.chart-card {
+  max-width: 690px;
+  margin: 22px auto 0;
+  padding: 24px 26px;
+  border: 1px solid #2b3c52;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(23,38,58,.98), rgba(15,26,42,.98));
+}
+
+.chart-card h2 {
+  margin: 0 0 6px;
+  font: 700 17px Manrope, sans-serif;
+}
+
+.chart-help,
+.chart-note {
+  margin: 0 0 14px;
+  color: #a9b7ca;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.chart-box {
+  position: relative;
+  height: 320px;
+  margin: 8px 0 14px;
+}
+
+.chart-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #dce5f1;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chart-select select {
+  padding: 8px 10px;
+  border: 1px solid #3a4c64;
+  border-radius: 8px;
+  background: #0b1524;
+  color: #e9eef8;
+  font: inherit;
+  font-weight: 500;
+}
+
+.chart-select select:focus-visible,
+.filter-chip:focus-visible,
+.history-item:focus-visible {
+  outline: 3px solid #5ce0c1;
+  outline-offset: 2px;
+}
+
+.chart-detail,
+.detail-box p {
+  margin: 14px 0 0;
+  color: #dce5f1;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid #3a4c64;
+  border-radius: 99px;
+  background: transparent;
+  color: #c4d2e3;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  border-color: var(--teal);
+  background: rgba(92,224,193,.1);
+  color: #ffffff;
+}
+
+.chip-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.detail-box {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+}
+
+.detail-box p {
+  margin: 0;
+}
+
+.detail-box code {
+  overflow-wrap: anywhere;
+}
+
+/* each history row is a button, so it works with the keyboard too */
+.history-list li {
+  border-top: 1px solid rgba(41,57,78,.65);
+}
+
+.history-list .history-item {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 12px 8px;
+}
+
+.history-list .history-item:hover,
+.history-list .history-item.selected {
+  background: rgba(92,224,193,.07);
+}
+
+@media (max-width: 640px) {
+  .chart-card {
+    padding: 20px 16px;
+  }
+
+  .chart-box {
+    height: 260px;
+  }
+}

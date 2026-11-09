@@ -13,7 +13,7 @@ import {
   WifiOff
 } from 'lucide-react';
 import { checkUrl } from '../api.js';
-
+import ScoreChart from '../components/ScoreChart.jsx';
 // Text for each risk level. The level itself comes from the back end.
 const LEVEL_TEXT = {
   High: {
@@ -286,7 +286,11 @@ function CheckPage() {
         )}
       </div>
 
+       {/* Chart 1, shown under the result */}
+      {result && <ScoreChart score={result.score} />}
+
       <section className="how-section" id="how-it-works">
+        
         <div className="section-intro">
           <span className="section-tag">THE PROCESS</span>
           <h2>Safer decisions start with context.</h2>

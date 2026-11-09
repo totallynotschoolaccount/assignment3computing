@@ -2,12 +2,22 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, WifiOff } from 'lucide-react';
 import { clearHistory, getHistory } from '../api.js';
+import HistoryChart, { LEVEL_COLOURS } from '../components/HistoryChart.jsx';
+
+const FILTERS = [
+  { level: 'All', text: 'All links' },
+  { level: 'High', text: 'High risk (60-100)' },
+  { level: 'Medium', text: 'Medium risk (30-59)' },
+  { level: 'Low', text: 'Low risk (0-29)' }
+];
 
 // Shows every link checked in this browser session.
 function HistoryPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [filter, setFilter] = useState('All');
+  const [selectedId, setSelectedId] = useState(null);
 
   async function loadHistory() {
     setLoading(true);
@@ -30,10 +40,16 @@ function HistoryPage() {
     try {
       await clearHistory();
       setItems([]);
+      setSelectedId(null);
     } catch (err) {
       setError(err.message);
     }
   }
+
+  // number the links in the order they were checked, then apply the filter
+  const numbered = items.map((item, i) => ({ ...item, number: i + 1 }));
+  const shown = filter === 'All' ? numbered : numbered.filter((item) => item.risk_level === filter);
+  const selected = numbered.find((item) => item.id === selectedId);
 
   return (
     <>
@@ -81,17 +97,63 @@ function HistoryPage() {
             </button>
           </div>
 
+          {/* these buttons filter the chart and the list, and show what each colour means */}
+          <div className="filter-row" role="group" aria-label="Filter by risk level">
+            {FILTERS.map((f) => (
+              <button
+                key={f.level}
+                type="button"
+                className={`filter-chip ${filter === f.level ? 'active' : ''}`}
+                aria-pressed={filter === f.level}
+                onClick={() => setFilter(f.level)}
+              >
+                {f.level !== 'All' && (
+                  <span className="chip-dot" style={{ background: LEVEL_COLOURS[f.level] }} />
+                )}
+                {f.text}
+              </button>
+            ))}
+          </div>
+
+          {shown.length === 0 ? (
+            <p className="chart-note">No links in this group yet.</p>
+          ) : (
+            <HistoryChart items={shown} selectedId={selectedId} onSelect={setSelectedId} />
+          )}
+
+          <div className="detail-box" aria-live="polite">
+            {selected ? (
+              <p>
+                <strong>#{selected.number}</strong> <code>{selected.url}</code>
+                <br />
+                {selected.risk_level} risk, score {selected.score}/100. Our model said{' '}
+                <strong>{selected.label}</strong> ({Math.round(selected.confidence * 100)}%
+                confident), checked at {selected.checked_at.slice(11, 16)}.
+              </p>
+            ) : (
+              <p>Click a bar, or a link in the list, to see its details.</p>
+            )}
+          </div>
+
           <ul className="history-list">
-            {items.map((item) => (
-              <li className="history-item" key={item.id}>
-                <span className={`risk-badge ${item.risk_level.toLowerCase()}`}>
-                  <span className="badge-dot" />
-                  {item.risk_level}
-                </span>
-                {/* plain text, never a clickable link */}
-                <code className="history-url">{item.url}</code>
-                <span className="history-score">{item.score}/100</span>
-                <span className="history-time">{item.checked_at.slice(11, 16)}</span>
+            {shown.map((item) => (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  className={`history-item ${item.id === selectedId ? 'selected' : ''}`}
+                  onClick={() => setSelectedId(item.id)}
+                >
+                  <span className={`risk-badge ${item.risk_level.toLowerCase()}`}>
+                    <span className="badge-dot" />
+                    {item.risk_level}
+                  </span>
+                  {/* plain text, never a clickable link */}
+                  <code className="history-url">
+                    #{item.number} {item.url}
+                  </code>
+                  <span className="history-score">{item.score}/100</span>
+                  <span className="history-time">{item.checked_at.slice(11, 16)}</span>
+                </button>
               </li>
             ))}
           </ul>
