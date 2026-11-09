@@ -5,7 +5,7 @@ A front-end-only prototype for the PhishFight URL risk detection project. The la
 
 Run locally
 
-Requirements: Node.js 18+.
+Requirements: Node.js
 
 Run these commands one by one
 ```
@@ -19,12 +19,3 @@ Open the local URL printed by Vite. To check the production build:
 npm run build
 npm run preview
 ```
-
-## Design / usability decisions
-
-- Clear primary task and one prominent call to action.
-- Responsive layout for mobile and desktop.
-- Explicit labels, keyboard focus states, semantic sections, and live result announcements.
-- Plain-language warning signs and a visible caveat that low risk is not a guarantee.
-- Results are visually separated from the input and include a risk level plus a 0–100 score.
-- Reduced-motion preference is respected.
