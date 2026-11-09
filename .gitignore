@@ -10,3 +10,4 @@ dist/
 # Secrets and local data
 .env
 *.db
+ .pytest_cache/

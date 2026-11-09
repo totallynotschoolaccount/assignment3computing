@@ -1,13 +1,17 @@
 # database.py
 # Saves every check in a small SQLite database, so each user can see their own history.
 # Every query uses ? placeholders, so the input is always data and never part of the SQL
-
+# (Week 10, demo 5).
 
 import os
 import sqlite3
 from datetime import datetime
 
 DB_PATH = os.environ.get("DB_PATH", "history.db")
+
+# Defence 1 (SQL injection). Keep this "on". We only turn it "off" in .env to show the
+# attack working in our video, the same way as the DEFENCE switch in the Week 11 demos.
+SQL_DEFENCE = os.environ.get("SQL_DEFENCE", "on") == "on"
 
 
 def connect():
@@ -47,21 +51,42 @@ def get_db():
 
 def save_check(conn, session_id, result):
     checked_at = datetime.now().isoformat(timespec="seconds")
-    conn.execute(
-        "INSERT INTO checks (session_id, url, label, confidence, score, risk_level, checked_at) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (session_id, result["url"], result["label"], result["confidence"],
-         result["score"], result["risk_level"], checked_at),
-    )
+    if SQL_DEFENCE:
+        # safe: the ? marks keep the input as plain data
+        conn.execute(
+            "INSERT INTO checks (session_id, url, label, confidence, score, risk_level, checked_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (session_id, result["url"], result["label"], result["confidence"],
+             result["score"], result["risk_level"], checked_at),
+        )
+    else:
+        # UNSAFE, only for the video: the input is pasted straight into the SQL text
+        sql = (
+            "INSERT INTO checks (session_id, url, label, confidence, score, risk_level, checked_at) "
+            f"VALUES ('{session_id}', '{result['url']}', '{result['label']}', {result['confidence']}, "
+            f"{result['score']}, '{result['risk_level']}', '{checked_at}')"
+        )
+        print("UNSAFE SQL:", sql)
+        conn.execute(sql)
     conn.commit()
 
 
 def get_history(conn, session_id):
-    rows = conn.execute(
-        "SELECT id, url, label, confidence, score, risk_level, checked_at "
-        "FROM checks WHERE session_id = ? ORDER BY id",
-        (session_id,),
-    ).fetchall()
+    if SQL_DEFENCE:
+        # safe: the ? mark keeps the session id as plain data
+        rows = conn.execute(
+            "SELECT id, url, label, confidence, score, risk_level, checked_at "
+            "FROM checks WHERE session_id = ? ORDER BY id",
+            (session_id,),
+        ).fetchall()
+    else:
+        # UNSAFE, only for the video: the input is pasted straight into the SQL text
+        sql = (
+            "SELECT id, url, label, confidence, score, risk_level, checked_at "
+            f"FROM checks WHERE session_id = '{session_id}' ORDER BY id"
+        )
+        print("UNSAFE SQL:", sql)
+        rows = conn.execute(sql).fetchall()
     return [dict(row) for row in rows]
 
 
