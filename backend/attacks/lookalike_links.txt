@@ -1,0 +1,8 @@
+Look-alike links for the video (copy and paste these into the website).
+They look normal, but some letters are Cyrillic, so the model sees different words.
+
+Normal:     secure-login-paypal.com/account/update
+Look-alike: sеcurе-lоgin-pаypаl.cоm/аccоunt/updаtе
+
+Normal:     paypal.com.secure-login.tk/verify
+Look-alike: pаypаl.com.sеcurе-lоgin.tk/vеrify

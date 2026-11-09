@@ -3,11 +3,16 @@
 # Most of this comes from predict.py in Assignment 2.
 
 import hashlib
+import os
 
 import joblib
 import pandas as pd
 
 from features import FEATURE_NAMES, extract_features
+from normalise import has_unusual_characters, normalise_url
+
+# Advanced security (2.8). Keep this "on". We only turn it "off" in .env for the video.
+EVASION_DEFENCE = os.environ.get("EVASION_DEFENCE", "on") == "on"
 
 # warning signs in plain English (same as predict.py in A2)
 WARNINGS = {
@@ -37,7 +42,11 @@ def load_model(path, expected_hash):
 
 
 def predict_url(model, url):
-    features = extract_features(url)
+    if EVASION_DEFENCE:
+        # turn look-alike letters back into normal letters before the model reads the link
+        features = extract_features(normalise_url(url))
+    else:
+        features = extract_features(url)
     row = pd.DataFrame([features], columns=FEATURE_NAMES)
 
     # chance that the link is malicious, from 0 to 1
@@ -64,6 +73,8 @@ def predict_url(model, url):
         signs.append("Has words like login, verify or account")
     if features["url_length"] > 100:
         signs.append("The link is very long")
+    if EVASION_DEFENCE and has_unusual_characters(url):
+        signs.append("Has unusual or look-alike letters that can hide the real website")
 
     return {
         "url": url,
