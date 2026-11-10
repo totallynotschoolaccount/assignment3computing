@@ -4,7 +4,7 @@ import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// text and grid colours that are easy to read on our dark background
-ChartJS.defaults.color = '#c4d2e3';
-ChartJS.defaults.borderColor = 'rgba(153,174,203,.15)';
-ChartJS.defaults.font.family = "'DM Sans', sans-serif";
+// text and grid colours that are easy to read on our black background
+ChartJS.defaults.color = '#a1a1aa';
+ChartJS.defaults.borderColor = 'rgba(255, 255, 255, 0.08)';
+ChartJS.defaults.font.family = "'Inter', Arial, sans-serif";

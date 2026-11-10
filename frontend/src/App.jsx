@@ -1,5 +1,5 @@
 import { NavLink, Route, Routes } from 'react-router-dom';
-import { LockKeyhole, ShieldCheck } from 'lucide-react';
+import Logo from './components/Logo.jsx';
 import CheckPage from './pages/CheckPage.jsx';
 import HistoryPage from './pages/HistoryPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -9,28 +9,20 @@ function App() {
     <div className="app-shell">
       <header className="topbar">
         <NavLink className="brand" to="/" aria-label="PhishFight home">
-          <span className="brand-mark">
-            <ShieldCheck size={23} strokeWidth={2.3} />
-          </span>
+          <Logo size={30} />
           <span>
-            Phish<span>Fight</span>
-            <small>URL RISK CHECK</small>
+            Phish<span className="red">Fight</span>
           </span>
         </NavLink>
-        <nav className="topbar-right" aria-label="Main">
-          <span className="privacy-pill">
-            <LockKeyhole size={14} /> URL text only
-          </span>
-          <NavLink className="header-link" to="/" end>
+        <nav className="nav-links" aria-label="Main">
+          <NavLink to="/" end>
             Check a link
           </NavLink>
-          <NavLink className="header-link" to="/history">
-            History
-          </NavLink>
+          <NavLink to="/history">History</NavLink>
         </nav>
       </header>
 
-      <main id="home">
+      <main>
         <Routes>
           <Route path="/" element={<CheckPage />} />
           <Route path="/history" element={<HistoryPage />} />
@@ -40,10 +32,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <NavLink className="footer-brand" to="/">
-          <ShieldCheck size={18} /> PhishFight
-        </NavLink>
-        <span>COS30049 Assignment 3, Session 12 Group 4</span>
+        PhishFight, COS30049 Assignment 3, Session 12 Group 4
       </footer>
     </div>
   );

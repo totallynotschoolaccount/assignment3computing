@@ -2,7 +2,7 @@ import { Bar } from 'react-chartjs-2';
 import '../chartSetup.js';
 
 // the same colours as the risk badges
-export const LEVEL_COLOURS = { Low: '#5ce0c1', Medium: '#f4bb62', High: '#ff7979' };
+export const LEVEL_COLOURS = { Low: '#22c55e', Medium: '#f5a524', High: '#ef4444' };
 
 // Chart 2: compares every link checked in this session.
 function HistoryChart({ items, selectedId, onSelect }) {
@@ -16,8 +16,8 @@ function HistoryChart({ items, selectedId, onSelect }) {
         // the selected link gets a white outline
         borderColor: items.map((item) => (item.id === selectedId ? '#ffffff' : 'transparent')),
         borderWidth: 2,
-        borderRadius: 4,
-        maxBarThickness: 48
+        borderRadius: 6,
+        maxBarThickness: 56
       }
     ]
   };
@@ -31,7 +31,11 @@ function HistoryChart({ items, selectedId, onSelect }) {
       legend: { display: false }
     },
     scales: {
-      x: { title: { display: true, text: 'Links in the order you checked them' }, grid: { display: false } },
+      x: {
+        title: { display: true, text: 'Links in the order you checked them' },
+        grid: { display: false },
+        ticks: { maxRotation: 0, minRotation: 0 }
+      },
       y: { min: 0, max: 100, title: { display: true, text: 'Risk score (0 to 100)' } }
     },
     // clicking a bar selects that link
